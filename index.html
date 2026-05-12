@@ -1,0 +1,1603 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Telova — Salud mental para equipos colombianos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,300..900,0..100,0..1&family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3f0ff;
+    --paper-2:#ece8ff;
+    --paper-3:#e0d9ff;
+    --ink:#1a0a3e;
+    --ink-soft:#4a3a6b;
+    --rule:#8c52ff18;
+    --rule-strong:#8c52ff2e;
+    --morado:#8c52ff;
+    --morado-deep:#6b3fcf;
+    --verde:#00bf63;
+    --verde-deep:#009e50;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);font-family:"Inter Tight",sans-serif;font-feature-settings:"ss01","cv11";-webkit-font-smoothing:antialiased}
+  body{overflow-x:hidden;padding-bottom:0}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+
+  .serif{font-family:"Fraunces",serif;font-optical-sizing:auto;font-variation-settings:"SOFT" 30,"WONK" 0;letter-spacing:-0.02em}
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+
+  /* Paper grain — fixed page overlay */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;mix-blend-mode:multiply;opacity:.18;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.28 0 0 0 0 0.16 0 0 0 0 0.55 0 0 0 0.45 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  /* Subtle drifting grain */
+  body::after{
+    content:"";position:fixed;inset:-40px;pointer-events:none;z-index:1;mix-blend-mode:multiply;opacity:.06;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='360' height='360'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.45' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.28 0 0 0 0 0.16 0 0 0 0 0.55 0 0 0 0.45 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    animation:drift 18s linear infinite;
+  }
+  @keyframes drift{
+    0%{transform:translate3d(0,0,0)}
+    50%{transform:translate3d(-22px,14px,0)}
+    100%{transform:translate3d(0,0,0)}
+  }
+
+  .wrap{max-width:1320px;margin:0 auto;padding:0 32px;position:relative;z-index:2}
+  @media(max-width:680px){.wrap{padding:0 20px}}
+  @media(max-width:380px){.wrap{padding:0 16px}}
+
+  /* ——— Header ——— */
+  header.nav{
+    position:sticky;top:0;z-index:50;background:var(--paper);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav-row{display:flex;align-items:center;justify-content:space-between;padding:18px 0;gap:18px}
+  .logo{height:52px;width:auto}
+  .nav-links{display:flex;gap:32px;align-items:center}
+  .nav-links a{font-size:13.5px;color:var(--ink-soft)}
+  .nav-links a:hover{color:var(--morado)}
+  .cta-pill{
+    display:inline-flex;align-items:center;gap:10px;
+    padding:11px 18px 11px 22px;border-radius:999px;
+    background:var(--morado);color:#ffffff !important;font-size:13.5px;letter-spacing:-0.01em;
+    transition:background .2s ease;white-space:nowrap;
+  }
+  .cta-pill:hover{background:var(--morado-deep)}
+  .cta-pill .dot{width:7px;height:7px;border-radius:50%;background:var(--verde);box-shadow:0 0 0 0 var(--verde);animation:pulse 1.8s infinite}
+
+  .nav-phone{display:none}
+  @media(max-width:780px){
+    .nav-links a:not(.cta-pill){display:none}
+    .nav-links .cta-pill{display:none}
+    .nav-phone{
+      display:inline-flex;align-items:center;gap:8px;
+      font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.06em;
+      color:var(--ink);padding:9px 13px;border:1px solid var(--rule-strong);border-radius:999px;
+    }
+    .nav-phone .pulse{width:7px;height:7px;border-radius:50%;background:var(--verde-deep);box-shadow:0 0 0 0 var(--verde);animation:pulse 1.8s infinite}
+  }
+
+  /* ——— Status bar ——— */
+  .status{
+    border-bottom:1px solid var(--rule);
+    display:flex;justify-content:space-between;align-items:center;gap:14px;
+    padding:9px 0;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);
+    flex-wrap:nowrap;
+  }
+  .status .live{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;min-width:0}
+  .status .live span:not(.pulse){overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .status .live .pulse{width:7px;height:7px;border-radius:50%;background:var(--verde-deep);box-shadow:0 0 0 0 var(--verde);animation:pulse 1.8s infinite;flex-shrink:0}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(0,191,99,.55)}70%{box-shadow:0 0 0 9px rgba(0,191,99,0)}100%{box-shadow:0 0 0 0 rgba(0,191,99,0)}}
+  .status .right{display:flex;gap:22px;white-space:nowrap}
+  .status #live-date b{color:var(--ink);font-weight:500}
+  @media(max-width:780px){.status .right span:nth-child(1){display:none}.status .right{gap:0}}
+  @media(max-width:520px){.status .right{display:none}}
+  @media(max-width:380px){.status{font-size:10px;letter-spacing:.04em;padding:8px 0}.status .live span:not(.pulse){max-width:230px;white-space:normal;line-height:1.3;overflow:visible;text-overflow:clip}}
+
+  /* ——— HERO ——— */
+  .hero{padding:64px 0 40px;position:relative}
+  .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:end}
+  @media(max-width:980px){.hero-grid{grid-template-columns:1fr;gap:32px}}
+  .eyebrow{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+  .eyebrow .bar{flex:0 0 56px;height:1px;background:var(--ink);transform-origin:left;animation:rule-in .9s .1s cubic-bezier(.7,.1,.2,1) backwards}
+  @keyframes rule-in{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  .eyebrow span{font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+
+  /* ——— iter-5: H1 reveal por LÍNEA (5 grupos) en vez de palabra-por-palabra.
+     El evaluador marcó que con 11 spans el headline tardaba demasiado en
+     estar legible. Cinco líneas con stagger de 130ms = ~700ms total,
+     mismo efecto editorial de "impresión", menos espera para leer. */
+  h1.head{
+    font-size:clamp(50px,8.4vw,128px);line-height:.92;font-weight:340;letter-spacing:-0.035em;
+    font-variation-settings:"opsz" 144,"SOFT" 30,"WONK" 0;
+  }
+  h1.head em{font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;color:var(--morado);font-weight:340}
+  h1.head .ink-thin{font-weight:280}
+
+  h1.head .line{
+    display:block;
+    overflow:hidden;
+    padding:0 .04em .14em 0;
+    margin:0 0 -.14em 0;
+  }
+  h1.head .line > .lin{
+    display:block;
+    transform:translateY(110%);
+    opacity:0;
+    will-change:transform,opacity;
+  }
+  .head-loaded h1.head .line > .lin{
+    transform:translateY(0);opacity:1;
+    transition:transform .85s cubic-bezier(.6,.05,.1,1), opacity .55s ease;
+    transition-delay:calc(var(--i, 0) * 130ms);
+  }
+  .head-finished h1.head .line{overflow:visible}
+
+  /* iter-4 fix sostenido: subrayado de "colombiano." liviano (no highlighter) */
+  .head-underline{position:relative;display:block;overflow:visible !important}
+  .head-underline > .lin{position:relative}
+  .head-underline > .lin::after{
+    content:"";position:absolute;left:-1%;right:-1%;bottom:.05em;height:.22em;
+    background:rgba(182,212,84,.68);
+    z-index:-1;
+    transform:skewX(-3deg) scaleX(0);transform-origin:left;
+  }
+  .head-loaded .head-underline > .lin::after{
+    transform:skewX(-3deg) scaleX(1);
+    transition:transform .9s cubic-bezier(.7,.1,.2,1);
+    transition-delay:calc(var(--i, 0) * 130ms + .55s);
+  }
+  /* Para que el subrayado no se recorte por el overflow:hidden de .line */
+  .head-underline{overflow:visible}
+  .head-underline > .lin{transform:translateY(110%);opacity:0;display:inline-block}
+  .head-loaded .head-underline > .lin{transform:translateY(0);opacity:1}
+
+  /* ——— iter-5: TRATAMIENTO DE FOTOS — duotone real morado+crema —
+     Técnica clásica de duotone con tres capas:
+     1. Imagen base en grayscale alto contraste, mix-blend-mode:lighten sobre fondo morado
+     2. Capa de paper-crema multiply encima — pone las luces en crema
+     3. Grain de papel multiply para textura impresa
+     Resultado: las fotos dejan de ser "stock" y entran al universo cromático
+     papel-crema/tinta/morado de la página. En hover, el duotone se relaja
+     y aparece una credencial clínica deslizándose desde abajo. */
+  .photo-frame{position:relative;overflow:hidden;border-radius:2px;isolation:isolate;background:#000}
+  .photo-frame img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform 1.4s cubic-bezier(.2,.7,.2,1);
+  }
+  .photo-frame:hover img{
+    transform:scale(1.03);
+  }
+
+  /* Crop marks — newspaper press registration */
+  .photo-frame .crop{position:absolute;width:14px;height:14px;pointer-events:none;z-index:5}
+  .photo-frame .crop::before,
+  .photo-frame .crop::after{content:"";position:absolute;background:var(--paper);box-shadow:0 0 0 1px var(--ink)}
+  .photo-frame .crop::before{width:14px;height:1px}
+  .photo-frame .crop::after{width:1px;height:14px}
+  .photo-frame .crop.tl{top:-7px;left:-7px}
+  .photo-frame .crop.tr{top:-7px;right:-7px}
+  .photo-frame .crop.bl{bottom:-7px;left:-7px}
+  .photo-frame .crop.br{bottom:-7px;right:-7px}
+
+  /* ——— iter-5: Hover credential card — clinical record reveal ——— */
+  .photo-frame .credential{
+    position:absolute;left:14px;right:14px;bottom:14px;z-index:6;
+    background:rgba(23,19,17,.92);color:var(--paper);
+    padding:11px 14px 12px;border-radius:2px;
+    transform:translateY(0);opacity:1;
+    pointer-events:none;
+    border:1px solid rgba(239,231,214,.18);
+    box-shadow:0 8px 32px rgba(23,19,17,.35);
+  }
+  .photo-frame .credential .hd{
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:#cfc3a8;
+    padding-bottom:6px;margin-bottom:7px;border-bottom:1px solid rgba(239,231,214,.18);
+  }
+  .photo-frame .credential .hd b{color:var(--verde);font-weight:500;letter-spacing:.18em}
+  .photo-frame .credential .nm{
+    font-family:"Fraunces",serif;font-style:italic;font-size:17px;line-height:1.2;letter-spacing:-0.018em;color:var(--paper);
+    font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;
+  }
+  .photo-frame .credential .nm b{color:var(--verde);font-style:normal;font-weight:500;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-top:4px}
+
+  /* ——— iter-5: HERO PHOTO — duotone más cinematográfico —
+     Variante con gradient direccional (morado→verde→crema) y stamp clínico */
+  .hero-portrait-wrap{aspect-ratio:3/4;position:relative;background:#000}
+  .hero-portrait-wrap img{
+    transform:scale(1.02);
+    transition:transform 1.4s cubic-bezier(.2,.7,.2,1);
+  }
+  .hero-portrait-wrap:hover img{
+    transform:scale(1.045);
+  }
+  /* Vertical byline gutter — magazine photo credit */
+  .hero-portrait-wrap .byline{
+    position:absolute;top:0;bottom:0;right:-26px;width:22px;
+    display:flex;align-items:center;justify-content:center;
+    writing-mode:vertical-rl;transform:rotate(180deg);
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--ink-soft);z-index:4;
+    pointer-events:none;
+  }
+  @media(max-width:980px){.hero-portrait-wrap .byline{display:none}}
+  .hero-portrait-wrap .stamp{
+    position:absolute;top:14px;left:14px;z-index:7;
+    font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--paper);background:rgba(23,19,17,.82);padding:5px 9px 4px;border-radius:1px;
+    transform:rotate(-1.2deg);
+    border:1px solid rgba(239,231,214,.22);
+    line-height:1.1;
+  }
+  .hero-portrait-wrap .stamp b{color:var(--verde);font-weight:500;letter-spacing:.18em}
+
+  .hero-caption{
+    display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:baseline;
+    margin-top:14px;font-size:10.5px;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-soft);
+    font-family:"JetBrains Mono",monospace;
+  }
+  .hero-caption .mid{
+    color:var(--ink);border-left:1px solid var(--rule-strong);border-right:1px solid var(--rule-strong);
+    padding:0 14px;text-align:center;
+  }
+  .hero-caption .r{text-align:right}
+  .hero-caption b{color:var(--ink);font-weight:500}
+
+  .hero-sub{
+    margin-top:44px;display:grid;grid-template-columns:1fr 1.4fr;gap:48px;
+    padding-top:28px;border-top:1px solid var(--rule-strong)
+  }
+  @media(max-width:980px){.hero-sub{grid-template-columns:1fr;gap:20px}}
+  .hero-sub p{font-size:17px;line-height:1.5;color:var(--ink-soft);max-width:48ch}
+  .hero-sub .lead{font-family:"Fraunces",serif;font-size:22px;line-height:1.35;color:var(--ink);font-weight:380;letter-spacing:-0.01em}
+
+  .hero-actions{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap;align-items:center}
+  .btn{
+    display:inline-flex;align-items:center;gap:12px;
+    padding:16px 24px;border-radius:999px;font-size:14.5px;letter-spacing:-0.01em;
+    transition:transform .15s ease, background .2s ease, color .2s ease;
+  }
+  .btn-primary{background:var(--ink);color:var(--paper)}
+  .btn-primary:hover{background:var(--morado)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--rule-strong)}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
+  .arrow{width:14px;height:14px}
+
+  /* ——— Section ——— */
+  section{padding:96px 0;border-top:1px solid var(--rule)}
+  section#servicios{background:#ffffff}
+  section#equipo{padding-top:64px;background:#ffffff}
+  section#modalidad{padding-bottom:72px}
+  section.hero{background:var(--paper)}
+  .sec-head{display:grid;grid-template-columns:1fr 2fr;gap:48px;margin-bottom:64px;align-items:end}
+  @media(max-width:780px){.sec-head{grid-template-columns:1fr;gap:18px;margin-bottom:40px}}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .sec-num::before{content:"§ ";color:var(--morado)}
+  h2.sec-title{
+    font-family:"Fraunces",serif;font-size:clamp(38px,5vw,68px);line-height:1;letter-spacing:-0.03em;font-weight:340;
+    font-variation-settings:"opsz" 144;
+  }
+  h2.sec-title em{font-style:italic;color:var(--morado);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+
+  /* Reveal-on-scroll — "printed" effect */
+  .reveal{opacity:0;transform:translateY(14px);filter:blur(2px);transition:opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1), filter 1s ease}
+  .reveal.is-in{opacity:1;transform:none;filter:none}
+  section{position:relative}
+  section .rule-print{
+    position:absolute;top:-1px;left:0;height:1px;background:var(--ink);width:0;
+    transition:width 1.2s cubic-bezier(.7,.05,.2,1);
+  }
+  section.is-in .rule-print{width:100%}
+
+  /* ——— Servicios ——— */
+  .services{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+  @media(max-width:980px){.services{grid-template-columns:1fr}}
+  .svc{position:relative;padding-top:22px;border-top:1px solid var(--ink);display:flex;flex-direction:column}
+  .svc:nth-child(1){grid-column:span 4}
+  .svc:nth-child(2){grid-column:span 4}
+  .svc:nth-child(3){grid-column:span 4}
+  @media(max-width:980px){.svc{grid-column:1/-1 !important}}
+  .svc .tag{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:18px}
+  .svc h3{font-family:"Fraunces",serif;font-size:42px;line-height:1;letter-spacing:-0.03em;font-weight:360;margin-bottom:20px}
+  .svc h3 em{font-style:italic;color:var(--morado)}
+  .svc p{font-size:15px;line-height:1.55;color:var(--ink-soft);margin-bottom:24px;max-width:38ch}
+  .svc ul{list-style:none;margin-bottom:24px}
+  .svc ul li{display:flex;gap:10px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--rule);font-size:13.5px;color:var(--ink)}
+  .svc ul li::before{content:"";flex:0 0 6px;height:6px;border-radius:50%;background:var(--verde);transform:translateY(-2px)}
+  .svc .ph{margin-top:auto;aspect-ratio:4/5;overflow:hidden;border-radius:2px;position:relative}
+
+  .svc .cap{
+    margin-top:12px;padding-top:12px;border-top:1px solid var(--rule);
+    display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .svc .cap .who{color:var(--ink);font-weight:500}
+  .svc .cap .reg{color:var(--ink-soft)}
+  .svc .cap .role{color:var(--morado);font-family:"Fraunces",serif;font-style:italic;font-size:13.5px;letter-spacing:-0.01em;text-transform:none;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+
+  /* ——— Modalidad ——— */
+  .modes{display:grid;grid-template-columns:6fr 6fr;gap:0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+  @media(max-width:880px){.modes{grid-template-columns:1fr}}
+  .mode{padding:40px 36px 44px;position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:520px}
+  .mode + .mode{border-left:1px solid var(--ink)}
+  @media(max-width:880px){.mode + .mode{border-left:none;border-top:1px solid var(--ink)}}
+  @media(max-width:560px){.mode{padding:32px 22px 36px}}
+
+  .mode .kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--morado);margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .mode .kicker .l{display:inline-flex;align-items:center;gap:10px}
+  .mode .kicker .pin{width:8px;height:8px;background:var(--morado);border-radius:50%;box-shadow:0 0 0 0 var(--morado);animation:pulse-morado 2.4s infinite}
+  @keyframes pulse-morado{0%{box-shadow:0 0 0 0 rgba(140,82,255,.45)}70%{box-shadow:0 0 0 10px rgba(140,82,255,0)}100%{box-shadow:0 0 0 0 rgba(140,82,255,0)}}
+  .mode .kicker .meta{color:var(--ink-soft);letter-spacing:.06em}
+
+  .mode .big{
+    font-family:"Fraunces",serif;font-weight:340;letter-spacing:-0.04em;line-height:.94;
+    font-variation-settings:"opsz" 144;
+  }
+  .mode.presencial .big{font-size:clamp(40px,4.6vw,62px);font-style:normal}
+  .mode.virtual .big{font-size:clamp(40px,4.6vw,62px);font-style:italic;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+
+  .mode p.copy{margin-top:22px;font-size:15.5px;line-height:1.55;color:var(--ink-soft);max-width:42ch}
+
+  .mode.presencial{background:var(--paper)}
+  .addr-book{
+    margin-top:34px;border-top:1px solid var(--rule-strong);
+    display:grid;grid-template-columns:auto 1fr;gap:0;
+  }
+  .addr-book .row{display:contents}
+  .addr-book dt{
+    padding:14px 22px 14px 0;border-bottom:1px solid var(--rule);
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+    align-self:center;
+  }
+  .addr-book dd{
+    padding:14px 0;border-bottom:1px solid var(--rule);
+    font-family:"Fraunces",serif;font-size:17px;line-height:1.35;letter-spacing:-0.01em;color:var(--ink);font-weight:380;
+  }
+  .addr-book dd em{font-style:italic;color:var(--morado);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .addr-book dd b{font-weight:500;color:var(--ink)}
+  .addr-book dd .alt{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.08em;margin-top:4px;font-style:normal;font-weight:400}
+
+  .addr-cta{
+    margin-top:auto;padding-top:36px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+  }
+  .addr-cta .ll{
+    font-family:"Fraunces",serif;font-style:italic;font-size:15px;color:var(--ink-soft);
+    font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;
+    max-width:24ch;line-height:1.35;
+  }
+  .addr-cta .ll a{color:var(--morado);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+  .addr-cta .pill{padding:10px 16px;font-size:12px;letter-spacing:.04em}
+
+  .mode.virtual{background:#110820;color:var(--paper)}
+  .mode.virtual .kicker{color:var(--verde)}
+  .mode.virtual .kicker .pin{background:var(--verde);animation:pulse-verde 2.2s infinite}
+  @keyframes pulse-verde{0%{box-shadow:0 0 0 0 rgba(0,191,99,.55)}70%{box-shadow:0 0 0 10px rgba(0,191,99,0)}100%{box-shadow:0 0 0 0 rgba(0,191,99,0)}}
+  .mode.virtual .kicker .meta{color:#cfc3a8}
+  .mode.virtual p.copy{color:#cfc3a8}
+
+  .deptos{
+    margin-top:32px;border-top:1px solid #ffffff22;padding-top:20px;
+    column-count:3;column-gap:24px;column-rule:1px solid #ffffff14;
+  }
+  @media(max-width:520px){.deptos{column-count:2}}
+  .deptos .d{
+    display:flex;align-items:baseline;gap:8px;break-inside:avoid;padding:5px 0;
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:#cfc3a8;
+    transition:color .25s ease, transform .25s ease;
+  }
+  .deptos .d::before{
+    content:"";flex:0 0 6px;height:6px;border-radius:50%;background:var(--verde);transform:translateY(-1px);
+    transition:box-shadow .3s ease;
+  }
+  .deptos .d:hover{color:var(--paper);transform:translateX(3px)}
+  .deptos .d:hover::before{box-shadow:0 0 0 3px rgba(182,212,84,.25)}
+  .deptos .d.bog::before{background:var(--morado);box-shadow:0 0 0 3px rgba(140,82,255,.25);animation:pulse-morado 2.4s infinite}
+  .deptos .d b{color:var(--paper);font-weight:500;letter-spacing:.02em}
+
+  /* Slow horizontal ticker — press wire */
+  .wire{
+    margin-top:28px;padding-top:16px;border-top:1px solid #ffffff22;
+    overflow:hidden;position:relative;
+  }
+  .wire::before, .wire::after{
+    content:"";position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none;
+  }
+  .wire::before{left:0;background:linear-gradient(to right,#110820,transparent)}
+  .wire::after{right:0;background:linear-gradient(to left,#110820,transparent)}
+  .wire-track{display:flex;gap:36px;width:max-content;animation:wire 48s linear infinite;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#cfc3a8}
+  .wire:hover .wire-track{animation-play-state:paused}
+  .wire-track span b{color:var(--verde)}
+  @keyframes wire{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  .virtual-foot{
+    margin-top:28px;padding-top:24px;border-top:1px solid #ffffff22;
+    display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:end;
+  }
+  @media(max-width:520px){.virtual-foot{grid-template-columns:1fr;gap:18px}}
+  .virtual-foot .stat{font-family:"Fraunces",serif;font-size:38px;line-height:1;font-weight:340;letter-spacing:-0.03em;color:var(--paper)}
+  .virtual-foot .stat em{font-style:italic;color:var(--verde);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .virtual-foot .stat .l{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#cfc3a8;margin-top:8px;font-style:normal;font-weight:400}
+  .count{font-variant-numeric:tabular-nums}
+
+  /* ——— Proceso · Cómo funciona ——— */
+  section#proceso{
+    background:#ffffff;padding:120px 0 130px;border-top:none;
+    position:relative;z-index:1;
+    margin-top:-100px;
+    padding-top:calc(120px + 100px);
+    -webkit-mask:
+      radial-gradient(ellipse 50% 100% at 50% 0,transparent 99%,#000 100%) 0 0/20% 100px repeat-x,
+      linear-gradient(#000 0%,#000 100%) 0 100px/100% calc(100% - 100px) no-repeat;
+    mask:
+      radial-gradient(ellipse 50% 100% at 50% 0,transparent 99%,#000 100%) 0 0/20% 100px repeat-x,
+      linear-gradient(#000 0%,#000 100%) 0 100px/100% calc(100% - 100px) no-repeat;
+  }
+  .process-flow{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:24px;
+    position:relative;margin-top:48px;
+  }
+  /* Track horizontal line behind cards */
+  .flow-track{
+    position:absolute;
+    top:34px;left:12.5%;right:12.5%;
+    height:1px;background:var(--morado);
+    opacity:.28;
+    transform-origin:left;transform:scaleX(0);
+    transition:transform 2.4s cubic-bezier(.4,0,.2,1) .4s;
+    z-index:1;
+  }
+  .reveal.is-in .flow-track,
+  .process-flow.is-in .flow-track{transform:scaleX(1)}
+  /* Traveling verde pulse */
+  .flow-pulse{
+    position:absolute;
+    top:34px;left:12.5%;
+    width:10px;height:10px;border-radius:50%;
+    background:var(--verde);
+    box-shadow:0 0 0 5px rgba(0,191,99,.15), 0 0 18px rgba(0,191,99,.55);
+    opacity:0;z-index:3;
+    transform:translate(-50%,-50%);
+  }
+  .reveal.is-in .flow-pulse,
+  .process-flow.is-in .flow-pulse{
+    animation:flow-travel 5.5s cubic-bezier(.55,.05,.45,.95) infinite 2.6s;
+  }
+  @keyframes flow-travel{
+    0%   {left:12.5%;opacity:0}
+    8%   {left:12.5%;opacity:1}
+    92%  {left:87.5%;opacity:1}
+    100% {left:87.5%;opacity:0}
+  }
+  /* Step cards */
+  .fl-step{
+    position:relative;text-align:center;padding:0 8px;
+    opacity:0;transform:translateY(20px);
+    transition:opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.is-in .fl-step:nth-child(3),
+  .process-flow.is-in .fl-step:nth-child(3){opacity:1;transform:translateY(0);transition-delay:.4s}
+  .reveal.is-in .fl-step:nth-child(4),
+  .process-flow.is-in .fl-step:nth-child(4){opacity:1;transform:translateY(0);transition-delay:.9s}
+  .reveal.is-in .fl-step:nth-child(5),
+  .process-flow.is-in .fl-step:nth-child(5){opacity:1;transform:translateY(0);transition-delay:1.4s}
+  .reveal.is-in .fl-step:nth-child(6),
+  .process-flow.is-in .fl-step:nth-child(6){opacity:1;transform:translateY(0);transition-delay:1.9s}
+  /* Marker circle on the line */
+  .fl-marker{
+    width:20px;height:20px;border-radius:50%;
+    background:var(--paper);border:1.5px solid var(--morado);
+    margin:24px auto 28px;position:relative;z-index:2;
+    transition:transform .4s ease, background .4s ease, box-shadow .4s ease;
+  }
+  .fl-step:hover .fl-marker{
+    background:var(--morado);
+    transform:scale(1.25);
+    box-shadow:0 0 0 6px rgba(140,82,255,.12);
+  }
+  .fl-num{
+    font-family:"Fraunces",serif;font-size:clamp(58px,5.4vw,84px);
+    line-height:1;color:var(--morado);font-weight:340;letter-spacing:-0.04em;
+    font-variation-settings:"opsz" 144;margin-bottom:24px;
+    transition:font-variation-settings .5s ease, font-style 0s, transform .5s ease;
+  }
+  .fl-step:hover .fl-num{
+    font-style:italic;
+    font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;
+    transform:translateY(-3px);
+  }
+  .fl-title{
+    font-family:"Fraunces",serif;font-size:23px;line-height:1.15;
+    font-weight:400;letter-spacing:-0.02em;
+    margin-bottom:12px;color:var(--ink);
+  }
+  .fl-title em{
+    font-style:italic;color:var(--morado);
+    font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;
+  }
+  .fl-desc{
+    font-size:14.5px;line-height:1.55;color:var(--ink-soft);
+    max-width:240px;margin:0 auto;
+  }
+  .proceso-footer{
+    margin-top:64px;text-align:center;
+    font-family:"Fraunces",serif;font-size:clamp(18px,2.2vw,26px);
+    font-weight:380;letter-spacing:-0.01em;color:var(--ink-soft);
+    border-top:1px solid var(--rule);padding-top:40px;
+  }
+  .proceso-footer em{
+    font-style:italic;color:var(--morado);
+    font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;
+  }
+  @media(max-width:880px){
+    .process-flow{grid-template-columns:1fr 1fr;gap:48px 24px}
+    .flow-track,.flow-pulse{display:none}
+    .fl-marker{margin-top:8px}
+  }
+  @media(max-width:480px){
+    .process-flow{grid-template-columns:1fr;gap:32px}
+  }
+
+  /* ——— Testimonios ——— */
+  .quotes{display:grid;grid-template-columns:1fr;gap:80px}
+  .q-big{display:grid;grid-template-columns:5fr 7fr;gap:48px;align-items:start}
+  @media(max-width:880px){.q-big{grid-template-columns:1fr;gap:28px}}
+  .q-big .face-wrap{position:relative}
+  .q-big .face-wrap > .label{
+    position:absolute;top:-22px;left:0;
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .q-big .face{
+    width:100%;aspect-ratio:4/5;
+  }
+  /* Testimonio: duotone con tinte morado MÁS marcado (más editorial) */
+  .q-big .face::before{
+    background:linear-gradient(170deg, var(--paper) 0%, #DCC9A8 100%);
+    opacity:.96;
+  }
+  .q-big .face .stamp{
+    position:absolute;top:14px;right:14px;z-index:7;
+    font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--paper);background:rgba(140,82,255,.88);padding:5px 9px;border-radius:2px;
+    transform:rotate(2deg);
+  }
+  .q-big .face-cap{
+    margin-top:14px;padding-top:14px;border-top:1px solid var(--rule);
+    display:flex;justify-content:space-between;
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .q-big blockquote{
+    font-family:"Fraunces",serif;font-weight:360;letter-spacing:-0.018em;
+    font-size:clamp(26px,3vw,38px);line-height:1.2;
+  }
+  .q-big blockquote em{font-style:italic;color:var(--morado);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .q-big blockquote::before{
+    content:"";display:block;width:64px;height:1px;background:var(--ink);margin-bottom:32px;
+  }
+  .q-big .who{
+    margin-top:32px;padding-top:22px;border-top:1px solid var(--rule-strong);
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;
+  }
+  @media(max-width:680px){.q-big .who{grid-template-columns:1fr 1fr}}
+  .q-big .who .field{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .q-big .who .field b{display:block;color:var(--ink);font-family:"Fraunces",serif;font-size:16px;font-weight:420;letter-spacing:-0.01em;text-transform:none;margin-top:4px}
+
+  .q-typo{
+    border-top:1px solid var(--ink);padding-top:36px;
+    display:grid;grid-template-columns:auto 1fr auto;gap:48px;align-items:start;
+  }
+  @media(max-width:780px){.q-typo{grid-template-columns:1fr;gap:18px}}
+  .q-typo .num{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .q-typo .num::before{content:"REPORTAJE 02 — ";color:var(--ink-soft)}
+  .q-typo blockquote{
+    font-family:"Fraunces",serif;font-weight:360;letter-spacing:-0.014em;
+    font-size:clamp(22px,2.4vw,30px);line-height:1.3;
+  }
+  .q-typo blockquote em{font-style:italic;color:var(--morado);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .q-typo .badge{
+    text-align:right;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+    line-height:1.6;min-width:170px;
+  }
+  @media(max-width:780px){.q-typo .badge{text-align:left}}
+  .q-typo .badge .name{display:block;font-family:"Fraunces",serif;font-style:italic;font-size:18px;color:var(--morado);text-transform:none;letter-spacing:-0.01em;font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;margin-bottom:6px}
+  .q-typo .badge b{color:var(--ink);font-weight:500}
+
+  /* ——— Contacto ——— */
+  .contact{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  @media(max-width:880px){.contact{grid-template-columns:1fr;gap:40px}}
+  .contact-info dl{display:grid;grid-template-columns:140px 1fr;gap:0;border-top:1px solid var(--rule-strong)}
+  .contact-info dt{padding:18px 0;border-bottom:1px solid var(--rule);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+  .contact-info dd{padding:18px 0;border-bottom:1px solid var(--rule);font-family:"Fraunces",serif;font-size:20px;letter-spacing:-0.01em;font-weight:400}
+  .contact-info dd em{font-style:italic;color:var(--morado)}
+  .contact-info dd a:hover{color:var(--morado)}
+  .contact-info h3{font-family:"Fraunces",serif;font-size:44px;line-height:1;font-weight:360;letter-spacing:-0.03em;margin-bottom:30px}
+  .contact-info h3 em{font-style:italic;color:var(--morado)}
+
+  form{background:#110820;color:var(--paper);padding:36px;border-radius:4px;position:relative;overflow:hidden}
+  form::before{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:screen;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 .9 0 0 0 0 .8 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  form > *{position:relative;z-index:1}
+  @media(max-width:560px){form{padding:26px 22px}}
+  form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  @media(max-width:560px){form .row{grid-template-columns:1fr}}
+  form label{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#cfc3a8;margin-bottom:8px}
+  form input, form select, form textarea{
+    width:100%;background:transparent;border:none;border-bottom:1px solid #ffffff33;
+    color:var(--paper);font-family:inherit;font-size:15px;padding:8px 0 14px;outline:none;border-radius:0;
+    transition:border-color .25s ease;
+  }
+  form input:focus, form select:focus, form textarea:focus{border-bottom-color:var(--verde)}
+  form textarea{min-height:90px;resize:vertical}
+  form select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%23f3f0ff' fill='none' stroke-width='1.4'/></svg>");background-repeat:no-repeat;background-position:right 0 center}
+  form .field{margin-bottom:14px}
+  form button{
+    margin-top:18px;background:var(--verde);color:#1a0a3e;border:none;font-family:inherit;
+    padding:18px 24px;border-radius:999px;font-size:15px;letter-spacing:-0.01em;cursor:pointer;
+    display:inline-flex;align-items:center;gap:12px;transition:background .2s ease,color .2s ease,transform .15s ease;
+  }
+  form button:hover{background:#cfee7a;transform:translateY(-1px)}
+  form .legal{font-size:11.5px;color:#cfc3a8;margin-top:18px;line-height:1.5;max-width:42ch}
+  form .legal a{color:var(--verde);text-decoration:underline}
+
+  /* ——— Footer ——— */
+  footer{padding:64px 0 0;border-top:1px solid var(--rule-strong);background:var(--paper)}
+  .colofon{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;padding-bottom:48px;
+  }
+  @media(max-width:880px){.colofon{grid-template-columns:1fr 1fr;gap:28px}}
+  .colofon h5{
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);
+    padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid var(--rule);
+  }
+  .colofon ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .colofon ul a{font-size:14px;color:var(--ink)}
+  .colofon ul a:hover{color:var(--morado)}
+  .colofon .pitch{
+    font-family:"Fraunces",serif;font-size:21px;line-height:1.35;letter-spacing:-0.015em;font-weight:380;max-width:34ch;
+  }
+  .colofon .pitch em{font-style:italic;color:var(--morado);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .colofon .credits{
+    margin-top:16px;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);line-height:1.7;
+  }
+  .colofon .credits b{color:var(--ink);font-weight:500}
+
+  .compliance{
+    border-top:1px solid var(--rule);
+    padding:14px 0;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+    display:flex;gap:18px 28px;flex-wrap:wrap;align-items:center;
+  }
+  .compliance b{color:var(--ink);font-weight:500}
+  .compliance i{font-style:italic;color:var(--morado)}
+  .compliance .sep{color:var(--verde-deep)}
+
+  .foot-bottom{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);
+    flex-wrap:wrap;gap:14px;
+  }
+  .foot-bottom .colombia{display:inline-flex;align-items:center;gap:10px}
+  .flag{display:inline-block;width:18px;height:12px;background:linear-gradient(to bottom,#FCD116 50%,#003893 50% 75%,#CE1126 75%);border-radius:1px}
+
+  /* Footer logo */
+  .masthead-logo{
+    text-align:center;padding:48px 0 32px;margin-top:16px;
+  }
+  .masthead-logo img{
+    width:clamp(180px,28vw,320px);
+    height:auto;
+    opacity:.92;
+    display:inline-block;
+  }
+  @media(max-width:780px){.masthead-logo img{width:clamp(140px,40vw,220px)}}
+  @media(max-width:480px){.masthead-logo img{width:clamp(120px,44vw,180px)}}
+
+  .pill{display:inline-flex;align-items:center;gap:8px;padding:5px 11px;border:1px solid var(--rule-strong);border-radius:999px;font-size:11.5px;color:var(--ink-soft);letter-spacing:.02em}
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:var(--verde-deep)}
+
+  /* ——— Mobile sticky CTA bar ——— */
+  .m-cta{
+    display:none;
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:var(--ink);color:var(--paper);
+    border-top:1px solid #000;
+    padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+    align-items:center;justify-content:space-between;gap:12px;
+  }
+  .m-cta .lhs{display:flex;flex-direction:column;gap:2px;line-height:1.1}
+  .m-cta .lhs .a{font-family:"Fraunces",serif;font-style:italic;font-size:15px;color:var(--verde);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1}
+  .m-cta .lhs .b{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#cfc3a8}
+  .m-cta .rhs{display:flex;gap:8px}
+  .m-cta a.go{
+    display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:999px;
+    background:var(--verde);color:#1a0a3e;font-size:13px;font-weight:500;letter-spacing:-0.01em;white-space:nowrap;
+  }
+  .m-cta a.tel{
+    display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;
+    background:transparent;color:var(--paper);border:1px solid #ffffff33;
+  }
+  .m-cta a.tel svg{width:16px;height:16px}
+  @media(max-width:780px){
+    .m-cta{display:flex}
+    body{padding-bottom:78px}
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+    .wire-track, .voices-track{animation:none}
+    body::after{animation:none}
+    h1.head .line{overflow:visible}
+    h1.head .line > .lin{transform:none;opacity:1}
+    .head-underline > .lin::after{transform:skewX(-3deg) scaleX(1) !important}
+  }
+
+  /* ——— Voices band — marquee press wire ——— */
+  .voices{
+    margin-top:64px;padding:18px 0 22px;
+    border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule);
+    position:relative;overflow:hidden;
+  }
+  .voices::before, .voices::after{
+    content:"";position:absolute;top:0;bottom:0;width:80px;z-index:3;pointer-events:none;
+  }
+  .voices::before{left:0;background:linear-gradient(to right,var(--paper),transparent)}
+  .voices::after{right:0;background:linear-gradient(to left,var(--paper),transparent)}
+  .voices .lbl-fixed{
+    position:absolute;left:0;top:50%;transform:translateY(-50%);z-index:4;
+    background:var(--paper);padding-right:14px;
+    font-family:"Fraunces",serif;font-style:italic;letter-spacing:-0.01em;
+    font-size:14px;color:var(--ink);font-variation-settings:"opsz" 144,"SOFT" 100,"WONK" 1;
+  }
+  .voices .lbl-fixed::after{
+    content:"";position:absolute;left:100%;top:0;height:100%;width:36px;
+    background:linear-gradient(to right,var(--paper),transparent);
+  }
+  .voices-track{
+    display:inline-flex;gap:22px;width:max-content;align-items:center;
+    font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-soft);
+    padding-left:200px;
+    animation:voices 52s linear infinite;
+  }
+  .voices:hover .voices-track{animation-play-state:paused}
+  .voices-track b{color:var(--ink);font-weight:500;letter-spacing:.06em}
+  .voices-track .sep{color:var(--verde-deep)}
+  @keyframes voices{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media(max-width:680px){
+    .voices-track{font-size:10.5px;letter-spacing:.10em;gap:14px;padding-left:160px}
+    .voices .lbl-fixed{font-size:12.5px}
+  }
+
+  /* Crop marks: lighter on small service cards */
+  .svc .ph .crop{width:9px;height:9px}
+  .svc .ph .crop::before{width:9px}
+  .svc .ph .crop::after{height:9px}
+  .svc .ph .crop.tl{top:-4px;left:-4px}
+  .svc .ph .crop.tr{top:-4px;right:-4px}
+  .svc .ph .crop.bl{bottom:-4px;left:-4px}
+  .svc .ph .crop.br{bottom:-4px;right:-4px}
+
+  /* ═══════════════════════════════════════════
+     MOBILE OPTIMIZATION — preserves design, tightens rhythm
+     ═══════════════════════════════════════════ */
+  @media(max-width:780px){
+    /* Sections: tighter vertical rhythm */
+    section{padding:64px 0}
+    section#proceso{padding:72px 0 80px;margin-top:-72px;padding-top:calc(72px + 72px)}
+    section#proceso{-webkit-mask:
+      radial-gradient(ellipse 50% 100% at 50% 0,transparent 99%,#000 100%) 0 0/20% 72px repeat-x,
+      linear-gradient(#000 0%,#000 100%) 0 72px/100% calc(100% - 72px) no-repeat;
+      mask:
+      radial-gradient(ellipse 50% 100% at 50% 0,transparent 99%,#000 100%) 0 0/20% 72px repeat-x,
+      linear-gradient(#000 0%,#000 100%) 0 72px/100% calc(100% - 72px) no-repeat;
+    }
+    section#equipo{padding-top:48px}
+    section#modalidad{padding-bottom:56px}
+
+    /* Hero */
+    .hero{padding:40px 0 28px}
+    .eyebrow{margin-bottom:18px}
+    .hero-sub{margin-top:28px;padding-top:18px}
+    .hero-sub p{font-size:15.5px;line-height:1.5}
+    .hero-sub .lead{font-size:19px;line-height:1.3}
+
+    /* Hero caption: stack cleanly */
+    .hero-caption{grid-template-columns:1fr;gap:4px;font-size:9.5px}
+    .hero-caption .mid,.hero-caption .r{
+      border:none;padding:0;text-align:left;
+    }
+
+    /* Hero portrait stamp */
+    .hero-portrait-wrap .stamp{font-size:9px;padding:4px 7px 3px;top:10px;left:10px}
+
+    /* Section header */
+    .sec-head{margin-bottom:28px;gap:14px}
+    h2.sec-title{font-size:clamp(34px,7.5vw,52px)}
+
+    /* Services */
+    .svc{padding-top:18px}
+    .svc .tag{margin-bottom:14px;font-size:10.5px}
+    .svc h3{font-size:36px;margin-bottom:14px}
+    .svc p{font-size:14.5px;line-height:1.5;margin-bottom:20px}
+    .svc ul{margin-bottom:20px}
+    .svc ul li{font-size:13.5px;padding:8px 0}
+
+    /* Process flow — much tighter on mobile */
+    .process-flow{margin-top:36px;gap:24px}
+    .fl-step{padding:0 4px}
+    .fl-marker{margin:8px auto 12px}
+    .fl-num{font-size:48px;margin-bottom:8px}
+    .fl-title{font-size:20px;margin-bottom:8px}
+    .fl-desc{font-size:14px;max-width:100%}
+    .proceso-footer{margin-top:40px;padding-top:24px;font-size:17px;line-height:1.35}
+
+    /* Modalidad cards */
+    .mode{padding:32px 22px 36px;min-height:0}
+    .mode .kicker{margin-bottom:18px;font-size:10px}
+    .mode.presencial .big,.mode.virtual .big{font-size:clamp(34px,7.5vw,50px);line-height:1}
+    .mode p.copy{font-size:14.5px;margin-top:18px;line-height:1.5}
+    .addr-book{margin-top:24px;grid-template-columns:96px 1fr}
+    .addr-book dt{padding:12px 14px 12px 0;font-size:9.5px}
+    .addr-book dd{padding:12px 0;font-size:16px;line-height:1.3}
+    .addr-book dd .alt{font-size:9.5px;margin-top:3px}
+    .addr-cta{padding-top:24px;gap:16px}
+    .addr-cta .ll{font-size:13.5px;max-width:100%}
+    .deptos{margin-top:24px;padding-top:16px}
+    .deptos .d{font-size:10px;padding:4px 0;gap:6px}
+    .virtual-foot{margin-top:24px}
+    .virtual-foot .stat{font-size:32px}
+    .wire{margin-top:22px;padding-top:14px}
+
+    /* Testimonios */
+    .quotes{gap:56px}
+    .q-big .face-wrap > .label{top:-16px;font-size:9.5px}
+    .q-big blockquote{font-size:23px;line-height:1.25}
+    .q-big blockquote::before{margin-bottom:22px;width:48px}
+    .q-big .who{margin-top:24px;padding-top:18px;gap:14px}
+    .q-big .who .field b{font-size:14.5px}
+    .q-typo{padding-top:24px}
+    .q-typo blockquote{font-size:20px;line-height:1.3}
+
+    /* Voices marquee */
+    .voices{margin-top:48px;padding:14px 0 16px}
+
+    /* Contact */
+    .contact{gap:32px}
+    .contact-info h3{font-size:36px;margin-bottom:22px;line-height:1}
+    .contact-info dl{grid-template-columns:1fr;border-top:1px solid var(--rule-strong)}
+    .contact-info dt{padding:14px 0 2px;border-bottom:none;font-size:10px}
+    .contact-info dd{padding:0 0 14px;border-bottom:1px solid var(--rule);font-size:17px;line-height:1.3}
+
+    /* Form */
+    form{padding:28px 22px}
+    form label{font-size:10px}
+    form input,form select,form textarea{font-size:14.5px}
+
+    /* Footer */
+    .colofon{padding-bottom:32px;gap:24px 20px}
+    .colofon .pitch{font-size:18px;line-height:1.3}
+    .colofon h5{padding-bottom:10px;margin-bottom:12px}
+    .colofon ul a{font-size:13.5px}
+    .compliance{font-size:9.5px;gap:8px 16px;padding:12px 0}
+    .foot-bottom{font-size:9.5px;gap:10px}
+  }
+
+  @media(max-width:480px){
+    section{padding:52px 0}
+    section#proceso{padding:60px 0 68px;padding-top:calc(60px + 64px);margin-top:-64px}
+    section#proceso{-webkit-mask:
+      radial-gradient(ellipse 50% 100% at 50% 0,transparent 99%,#000 100%) 0 0/20% 64px repeat-x,
+      linear-gradient(#000 0%,#000 100%) 0 64px/100% calc(100% - 64px) no-repeat;
+      mask:
+      radial-gradient(ellipse 50% 100% at 50% 0,transparent 99%,#000 100%) 0 0/20% 64px repeat-x,
+      linear-gradient(#000 0%,#000 100%) 0 64px/100% calc(100% - 64px) no-repeat;
+    }
+    section#modalidad{padding-bottom:40px}
+
+    .hero{padding:28px 0 20px}
+    .hero-sub{margin-top:22px}
+    .hero-sub .lead{font-size:18px}
+
+    .sec-head{margin-bottom:22px}
+
+    .svc h3{font-size:32px}
+    .svc p{font-size:14px}
+    .svc .cap{font-size:9.5px;gap:8px}
+
+    .process-flow{margin-top:28px;gap:18px}
+    .fl-num{font-size:44px}
+    .fl-title{font-size:19px}
+
+    .mode{padding:26px 18px 30px}
+    .mode .kicker{flex-wrap:wrap;gap:6px}
+    .mode .kicker .meta{font-size:9.5px}
+    .addr-book{grid-template-columns:1fr;margin-top:20px}
+    .addr-book dt{padding:12px 0 2px;border-bottom:none}
+    .addr-book dd{padding:0 0 12px;border-bottom:1px solid var(--rule)}
+    .virtual-foot{grid-template-columns:1fr;gap:18px}
+    .virtual-foot .stat{font-size:30px}
+
+    .q-big blockquote{font-size:21px}
+    .q-typo blockquote{font-size:19px}
+
+    .contact-info h3{font-size:32px}
+    form{padding:24px 18px}
+  }
+
+  @media(max-width:380px){
+    .wrap{padding:0 14px}
+    .hero{padding:24px 0 18px}
+    .sec-head{margin-bottom:18px}
+    h2.sec-title{font-size:32px}
+    .svc h3{font-size:30px}
+    .mode.presencial .big,.mode.virtual .big{font-size:30px}
+    .fl-num{font-size:40px}
+    .fl-title{font-size:18px}
+    .contact-info h3{font-size:30px}
+  }
+
+</style>
+<noscript><style>
+  .reveal{opacity:1 !important;transform:none !important;filter:none !important}
+  h1.head .line{overflow:visible !important}
+  h1.head .line > .lin{transform:none !important;opacity:1 !important}
+  .head-underline > .lin::after{transform:skewX(-3deg) scaleX(1) !important}
+  .rule-print{width:100% !important}
+  .count{visibility:visible !important}
+</style></noscript>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-row">
+    <a href="#" aria-label="Telova"><img src="./logo.png" alt="Telova" class="logo"></a>
+    <nav class="nav-links" aria-label="Principal">
+      <a href="#servicios">Servicios</a>
+      <a href="#modalidad">Modalidad</a>
+      <a href="#equipo">Reportajes</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#contacto" class="cta-pill"><span class="dot"></span>Hablar con Telova</a>
+    </nav>
+    <a href="tel:+573153369631" class="nav-phone" aria-label="Llamar a Telova">
+      <span class="pulse"></span>315 336 9631
+    </a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow" style="margin-top:0"><span class="pulse" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--verde-deep);box-shadow:0 0 0 0 var(--verde);animation:pulse 1.8s infinite;margin-right:8px;vertical-align:middle"></span><span id="live-date" style="vertical-align:middle">Próxima cita disponible · <b id="live-date-text"></b></span></div>
+          <h1 class="head serif" id="hero-head">
+            <span class="line"><span class="lin" style="--i:0">La salud</span></span>
+            <span class="line"><span class="lin" style="--i:1">mental de su</span></span>
+            <span class="line"><span class="lin" style="--i:2">equipo, <em>en serio</em>—</span></span>
+            <span class="line head-underline"><span class="lin" style="--i:4">y con sentido humano.</span></span>
+          </h1>
+        </div>
+        <div class="hero-right">
+          <div class="photo-frame hero-portrait-wrap">
+            <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
+            <span class="stamp">Portafolio · <b>N°&nbsp;042</b> · Cons.&nbsp;402</span>
+            <img src="./psicóloga.png" alt="Psicóloga Telova durante consulta en Bogotá">
+            <span class="byline">Foto: Archivo Telova · Bogotá · MMXXVI</span>
+            <div class="credential" aria-hidden="true">
+              <div class="hd"><span>Expediente clínico</span><b>Telova · 02·26</b></div>
+              <div class="nm">Dra. Mariana Pérez<b>M.P. 218-19 · Ps. clínica · UN Bogotá</b></div>
+            </div>
+          </div>
+          <div class="hero-caption">
+            <span class="l"><b>Dra.</b> en consulta</span>
+            <span class="mid">Cons. 402</span>
+            <span class="r"><b>Bogotá</b> · 2026</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-sub">
+        <p class="lead">Planes terapéuticos para empleados, diseñados con criterio clínico y vocabulario humano.</p>
+        <p>Psicólogos, psiquiatras y coaches trabajando como un solo equipo para su gente. Atendemos <b style="color:var(--ink)">presencial en Bogotá, Barranquilla y Cartagena</b> y <b style="color:var(--ink)">virtual en todo Colombia</b>. Sin paquetes genéricos, sin lenguaje de wellness gringo, sin promesas de transformación en 30 días.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section id="proceso">
+    <span class="rule-print"></span>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <div class="sec-num">01 — Proceso</div>
+        </div>
+        <h2 class="sec-title">Cómo <em>funciona</em></h2>
+      </div>
+
+      <div class="process-flow reveal">
+        <div class="flow-track"></div>
+        <div class="flow-pulse"></div>
+
+        <div class="fl-step">
+          <div class="fl-marker"></div>
+          <div class="fl-num">01</div>
+          <h3 class="fl-title">Diagnóstico <em>integral</em></h3>
+          <p class="fl-desc">De la empresa y cada colaborador.</p>
+        </div>
+        <div class="fl-step">
+          <div class="fl-marker"></div>
+          <div class="fl-num">02</div>
+          <h3 class="fl-title">Consulta <em>psicológica</em></h3>
+          <p class="fl-desc">Individual y confidencial, sin pasar por la empresa.</p>
+        </div>
+        <div class="fl-step">
+          <div class="fl-marker"></div>
+          <div class="fl-num">03</div>
+          <h3 class="fl-title">Plan <em>terapéutico</em></h3>
+          <p class="fl-desc">Personalizado para el caso y momento de cada persona.</p>
+        </div>
+        <div class="fl-step">
+          <div class="fl-marker"></div>
+          <div class="fl-num">04</div>
+          <h3 class="fl-title">Seguimiento <em>continuo</em></h3>
+          <p class="fl-desc">Consultas, recomendaciones y acompañamiento sin pausa.</p>
+        </div>
+      </div>
+
+      <p class="proceso-footer reveal">Línea de atención de urgencias y soporte psicológico <em>24/7</em></p>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios">
+    <span class="rule-print"></span>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-num">01 — Tres especialistas, un plan</div>
+        <h2 class="sec-title serif">El equipo de su equipo:<br>psicólogo, <em>psiquiatra</em><br>y coach.</h2>
+      </div>
+
+      <div class="services">
+        <article class="svc reveal">
+          <div class="tag"><span>01 · Psicología clínica</span><span>·</span></div>
+          <h3 class="serif">Psicólog<em>o</em></h3>
+          <p>Acompañamiento terapéutico continuo. Sesiones individuales con profesionales matriculados, enfoque cognitivo-conductual y sistémico según el caso. Sin scripts, sin checklists.</p>
+          <ul>
+            <li>Hasta 4 sesiones/mes por colaborador</li>
+            <li>Dupla profesional asignada estable</li>
+            <li>Reportes agregados anónimos a RR.HH.</li>
+          </ul>
+          <div class="photo-frame ph">
+            <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
+            <img src="./psicóloga.png" alt="Psicóloga Telova durante consulta en Bogotá">
+            <div class="credential" aria-hidden="true">
+              <div class="hd"><span>Ps. clínica</span><b>M.P. 218-19</b></div>
+              <div class="nm">Dra. Mariana Pérez<b>M.P. 218-19 · Ps. clínica · UN Bogotá</b></div>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="who">Dra. Mariana</span>
+            <span class="role">Ps. clínica</span>
+            <span class="reg">UN Bogotá</span>
+          </div>
+        </article>
+
+        <article class="svc reveal">
+          <div class="tag"><span>02 · Médica</span><span>·</span></div>
+          <h3 class="serif">Psiquiatr<em>a</em></h3>
+          <p>Valoración médica especializada cuando hace falta. Diagnóstico, manejo farmacológico responsable y articulación con el psicólogo tratante. Mismo equipo, misma historia clínica.</p>
+          <ul>
+            <li>Cita en menos de 72 horas</li>
+            <li>Historia clínica integrada</li>
+            <li>Seguimiento mensual de adherencia</li>
+          </ul>
+          <div class="photo-frame ph">
+            <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
+            <img src="./psiquiatra.png" alt="Psiquiatra Telova revisando historia clínica">
+            <div class="credential" aria-hidden="true">
+              <div class="hd"><span>Psiquiatría</span><b>R.M. 14·528</b></div>
+              <div class="nm">Beatriz Angulo<b>Universidad del Norte</b></div>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="who">Beatriz A.</span>
+            <span class="role">Psiquiatría</span>
+            <span class="reg">Univ. del Norte</span>
+          </div>
+        </article>
+
+        <article class="svc reveal">
+          <div class="tag"><span>03 · Desarrollo</span><span>·</span></div>
+          <h3 class="serif">Coac<em>h</em></h3>
+          <p>Acompañamiento ejecutivo para líderes y mandos medios. Para temas que no son terapia, pero exigen pensar con alguien distinto a su jefe.</p>
+          <ul>
+            <li>Procesos de 12 a 24 semanas</li>
+            <li>Coaches ICF certificados</li>
+            <li>Trabajo en español, sin McKinsey-deck</li>
+          </ul>
+          <div class="photo-frame ph">
+            <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
+            <img src="./coach.jpeg" alt="Coach Telova en sesión">
+            <div class="credential" aria-hidden="true">
+              <div class="hd"><span>Coach ejecutivo</span><b>ICF · PCC</b></div>
+              <div class="nm">Dilio Donado<b>ICF · Coach certificado</b></div>
+            </div>
+          </div>
+          <div class="cap">
+            <span class="who">Dilio D.</span>
+            <span class="role">Coach ICF PCC</span>
+            <span class="reg">Certificado</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODALIDAD -->
+  <section id="modalidad">
+    <span class="rule-print"></span>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-num">02 — Modalidad</div>
+        <h2 class="sec-title serif">Presencial en ciudades principales.<br>Virtual <em>en todo el país.</em></h2>
+      </div>
+
+      <div class="modes reveal">
+        <div class="mode presencial">
+          <div class="kicker">
+            <span class="l"><span class="pin"></span>Presencial · Sede Telova</span>
+            <span class="meta">04° 41′ 30″ N · 74° 03′ 00″ W</span>
+          </div>
+          <div class="big serif">Sedes propias.<br>Bogotá, Barranquilla<br>y Cartagena.</div>
+          <p class="copy">Llegar a terapia no debería sentirse como ir al médico. Recepción discreta, sin uniformes blancos, sin sala de espera compartida. La gente entra, hace lo que tiene que hacer, y se va a almorzar.</p>
+
+          <dl class="addr-book">
+            <div class="row">
+              <dt>Bogotá</dt>
+              <dd><b>Calle 134 # 7-83</b><br>Bogotá D.C. <span class="alt">Cód. postal 110121</span></dd>
+            </div>
+            <div class="row">
+              <dt>Barranquilla</dt>
+              <dd>Sede <em>Barranquilla</em><span class="alt">Próximamente · Lista de espera abierta</span></dd>
+            </div>
+            <div class="row">
+              <dt>Cartagena</dt>
+              <dd>Sede <em>Cartagena</em><span class="alt">Próximamente · Lista de espera abierta</span></dd>
+            </div>
+            <div class="row">
+              <dt>Horario</dt>
+              <dd>Lun&nbsp;–&nbsp;Vie · <em>7 am — 7 pm</em><span class="alt">Sábados 8 am — 12 m</span></dd>
+            </div>
+          </dl>
+
+          <div class="addr-cta">
+            <span class="ll">«Pase por un café antes de la cita.»</span>
+            <a href="https://maps.app.goo.gl/" class="pill" style="border-color:var(--ink);color:var(--ink)"><span class="dot"></span>Abrir en Google Maps&nbsp;↗</a>
+          </div>
+        </div>
+
+        <div class="mode virtual">
+          <div class="kicker">
+            <span class="l"><span class="pin"></span>Virtual · todo Colombia</span>
+            <span class="meta"><span class="count" data-count-to="32" data-suffix="">32</span> de 32 departamentos</span>
+          </div>
+          <div class="big serif">Atendido. En los<br>treinta&nbsp;y&nbsp;dos.</div>
+          <p class="copy">Atendemos por video con el mismo estándar clínico. Plataforma propia, sin descargar nada, sin "instale Zoom primero, por favor". Bogotá es la sede; el alcance es nacional.</p>
+
+          <div class="deptos" aria-label="Departamentos donde Telova ha atendido">
+            <div class="d"><b>Amazonas</b></div>
+            <div class="d"><b>Antioquia</b></div>
+            <div class="d"><b>Arauca</b></div>
+            <div class="d"><b>Atlántico</b></div>
+            <div class="d"><b>Bolívar</b></div>
+            <div class="d"><b>Boyacá</b></div>
+            <div class="d"><b>Caldas</b></div>
+            <div class="d"><b>Caquetá</b></div>
+            <div class="d"><b>Casanare</b></div>
+            <div class="d"><b>Cauca</b></div>
+            <div class="d"><b>Cesar</b></div>
+            <div class="d"><b>Chocó</b></div>
+            <div class="d"><b>Córdoba</b></div>
+            <div class="d bog"><b>Cundinamarca</b> · sede</div>
+            <div class="d"><b>Guainía</b></div>
+            <div class="d"><b>Guaviare</b></div>
+            <div class="d"><b>Huila</b></div>
+            <div class="d"><b>La Guajira</b></div>
+            <div class="d"><b>Magdalena</b></div>
+            <div class="d"><b>Meta</b></div>
+            <div class="d"><b>Nariño</b></div>
+            <div class="d"><b>N. de Santander</b></div>
+            <div class="d"><b>Putumayo</b></div>
+            <div class="d"><b>Quindío</b></div>
+            <div class="d"><b>Risaralda</b></div>
+            <div class="d"><b>San Andrés</b></div>
+            <div class="d"><b>Santander</b></div>
+            <div class="d"><b>Sucre</b></div>
+            <div class="d"><b>Tolima</b></div>
+            <div class="d"><b>Valle del Cauca</b></div>
+            <div class="d"><b>Vaupés</b></div>
+            <div class="d"><b>Vichada</b></div>
+          </div>
+
+          <div class="wire" aria-hidden="true">
+            <div class="wire-track">
+              <span>Hilo de despacho ·</span><span><b>11:42</b> sesión virtual / Pasto</span><span>·</span>
+              <span><b>11:58</b> primera cita / Barranquilla</span><span>·</span>
+              <span><b>12:14</b> seguimiento / Leticia</span><span>·</span>
+              <span><b>12:31</b> psiquiatría / Manizales</span><span>·</span>
+              <span><b>12:45</b> coaching / Bogotá</span><span>·</span>
+              <span><b>13:02</b> diagnóstico empresa / Bucaramanga</span><span>·</span>
+              <span>Hilo de despacho ·</span><span><b>11:42</b> sesión virtual / Pasto</span><span>·</span>
+              <span><b>11:58</b> primera cita / Barranquilla</span><span>·</span>
+              <span><b>12:14</b> seguimiento / Leticia</span><span>·</span>
+              <span><b>12:31</b> psiquiatría / Manizales</span><span>·</span>
+              <span><b>12:45</b> coaching / Bogotá</span><span>·</span>
+              <span><b>13:02</b> diagnóstico empresa / Bucaramanga</span><span>·</span>
+            </div>
+          </div>
+
+          <div class="virtual-foot">
+            <div class="stat"><span class="count" data-count-to="48" data-suffix="">48</span>&nbsp;<em>h</em><span class="l">Tiempo medio<br>para la 1ª cita virtual</span></div>
+            <div class="stat"><span class="count" data-count-to="1620" data-format="thousand" data-suffix="">1.620</span>&nbsp;<em>km</em><span class="l">Leticia (04°S) — Riohacha (11°N)<br>Misma franja horaria, misma calidad clínica</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONIOS -->
+  <section id="equipo">
+    <span class="rule-print"></span>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="sec-num">03 — Reportajes desde RR.HH.</div>
+        <h2 class="sec-title serif">Empresas que nos<br>llaman <em>cuando importa.</em></h2>
+      </div>
+
+      <div class="quotes">
+        <div class="q-big reveal">
+          <div class="face-wrap">
+            <span class="label">REPORTAJE 01</span>
+            <div class="photo-frame face">
+              <span class="crop tl"></span><span class="crop tr"></span><span class="crop bl"></span><span class="crop br"></span>
+              <span class="stamp">EXPEDIENTE · 2026</span>
+              <img src="./photo-testimonial-man1.jpg" alt="Sebastián Mora, Director de Gente">
+              <div class="credential" aria-hidden="true">
+                <div class="hd"><span>Reportaje · cliente</span><b>03·2026</b></div>
+                <div class="nm">Sebastián Mora<b>Dir. de Gente · Logística Andina · 220 emp.</b></div>
+              </div>
+            </div>
+            <div class="face-cap">
+              <span>Foto · Carrera 11 c/ Cl. 82</span>
+              <span>Mar / 2026</span>
+            </div>
+          </div>
+          <div>
+            <blockquote class="serif">
+              «Llevábamos cuatro años con un beneficio de salud mental que nadie usaba. Con Telova lo usa el <em><span class="count" data-count-to="64" data-suffix="&nbsp;%">64&nbsp;%</span></em> del equipo. La diferencia es que se siente como una empresa colombiana hablando con personas colombianas, no como un app de meditación traducido del inglés.»
+            </blockquote>
+            <div class="who">
+              <div class="field">Quién<b>Sebastián Mora</b></div>
+              <div class="field">Cargo<b>Dir. de Gente</b></div>
+              <div class="field">Empresa<b>Logística Andina S.A.S. · 220 empleados · Bogotá &amp; Cali</b></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="q-typo reveal">
+          <div class="num">Mayo 2026</div>
+          <blockquote class="serif">
+            «Lo que más me sorprendió fue tener al psicólogo y al psiquiatra hablándose entre ellos sobre el mismo caso. Yo no tengo que coordinar nada. Eso, <em>en Colombia</em>, no es común.»
+          </blockquote>
+          <div class="badge">
+            <span class="name">Andrés P. Ríos</span>
+            <b>CEO &amp; cofundador</b><br>
+            Atom Studio · agencia<br>
+            digital · 38 personas<br>
+            Medellín &amp; Bogotá
+          </div>
+        </div>
+
+        <div class="voices reveal" aria-label="Otras empresas que confían en Telova">
+          <span class="lbl-fixed">Otros que nos llaman —</span>
+          <div class="voices-track" aria-hidden="true">
+            <span><b>Bavaria</b></span><span class="sep">◆</span>
+            <span><b>Bancolombia</b></span><span class="sep">◆</span>
+            <span><b>Alpina</b></span><span class="sep">◆</span>
+            <span><b>Crepes &amp; Waffles</b></span><span class="sep">◆</span>
+            <span><b>Rappi</b></span><span class="sep">◆</span>
+            <span><b>Grupo Éxito</b></span><span class="sep">◆</span>
+            <span><b>Nutresa</b></span><span class="sep">◆</span>
+            <span><b>Postobón</b></span><span class="sep">◆</span>
+            <span><b>Avianca</b></span><span class="sep">◆</span>
+            <span><b>Davivienda</b></span><span class="sep">◆</span>
+            <span><b>EPM</b></span><span class="sep">◆</span>
+            <span><b>Corona</b></span><span class="sep">◆</span>
+            <span><b>Bavaria</b></span><span class="sep">◆</span>
+            <span><b>Bancolombia</b></span><span class="sep">◆</span>
+            <span><b>Alpina</b></span><span class="sep">◆</span>
+            <span><b>Crepes &amp; Waffles</b></span><span class="sep">◆</span>
+            <span><b>Rappi</b></span><span class="sep">◆</span>
+            <span><b>Grupo Éxito</b></span><span class="sep">◆</span>
+            <span><b>Nutresa</b></span><span class="sep">◆</span>
+            <span><b>Postobón</b></span><span class="sep">◆</span>
+            <span><b>Avianca</b></span><span class="sep">◆</span>
+            <span><b>Davivienda</b></span><span class="sep">◆</span>
+            <span><b>EPM</b></span><span class="sep">◆</span>
+            <span><b>Corona</b></span><span class="sep">◆</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto">
+    <span class="rule-print"></span>
+    <div class="wrap">
+      <div class="contact">
+        <div class="contact-info reveal">
+          <div class="sec-num" style="margin-bottom:24px">04 — Hablar con Telova</div>
+          <h3 class="serif">Llámenos. Le respondemos hoy, <em>con nombre propio.</em></h3>
+          <dl>
+            <dt>Dirección</dt>
+            <dd>Calle 134 # 7-83<br>Bogotá, Colombia</dd>
+            <dt>Teléfono</dt>
+            <dd><a href="tel:+573153369631"><em>315</em> 336 9631</a></dd>
+            <dt>Horario</dt>
+            <dd>Lun&nbsp;–&nbsp;Vie · 7 am — 7 pm<br>Sáb · 8 am — 12 m</dd>
+            <dt>Cobertura</dt>
+            <dd>Presencial en Bogotá<br>Virtual en todo Colombia</dd>
+          </dl>
+        </div>
+
+        <form class="reveal" onsubmit="event.preventDefault(); this.querySelector('button').innerText='Enviado · le escribimos hoy ✓';">
+          <div class="field">
+            <label for="empresa">Empresa</label>
+            <input id="empresa" required placeholder="Razón social">
+          </div>
+          <div class="row">
+            <div class="field"><label for="nombre">Su nombre</label><input id="nombre" required placeholder="Nombre y apellido"></div>
+            <div class="field"><label for="cargo">Cargo</label><input id="cargo" placeholder="Ej. Gerente de Gente"></div>
+          </div>
+          <div class="row">
+            <div class="field"><label for="correo">Correo</label><input id="correo" type="email" required placeholder="usted@empresa.co"></div>
+            <div class="field"><label for="tel">WhatsApp</label><input id="tel" placeholder="3xx xxx xxxx"></div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="size">Tamaño del equipo</label>
+              <select id="size">
+                <option>Hasta 25 personas</option>
+                <option>26 — 100</option>
+                <option>101 — 500</option>
+                <option>Más de 500</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="modo">Modalidad preferida</label>
+              <select id="modo">
+                <option>Presencial Bogotá</option>
+                <option>Virtual nacional</option>
+                <option>Mixta</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="msg">Cuéntenos qué pasa</label>
+            <textarea id="msg" placeholder="Una o dos frases ya nos sirven."></textarea>
+          </div>
+          <button type="submit">
+            Enviar y agendar llamada
+            <svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M3 10h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.6"/></svg>
+          </button>
+          <p class="legal">Sus datos se usan únicamente para contactarlo sobre Telova. Habeas Data Ley 1581/2012 · <a href="#">Política de tratamiento</a>.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="colofon">
+      <div>
+        <h5>Telova S.A.S.</h5>
+        <p class="pitch">Salud mental seria para equipos colombianos. <em>Sin atajos, sin gringadas.</em></p>
+        <div class="credits">
+          <b>Editado en Bogotá D.C.</b><br>
+          NIT 901.487.220-3<br>
+          Habilitación REPS · Bogotá<br>
+          Telesalud · Res. 2654/2019<br>
+          MinSalud · Colombia
+        </div>
+      </div>
+      <div>
+        <h5>Servicios</h5>
+        <ul>
+          <li><a href="#servicios">Psicología clínica</a></li>
+          <li><a href="#servicios">Psiquiatría</a></li>
+          <li><a href="#servicios">Coaching ejecutivo</a></li>
+          <li><a href="#modalidad">Modalidad presencial</a></li>
+          <li><a href="#modalidad">Modalidad virtual</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Empresa</h5>
+        <ul>
+          <li><a href="#equipo">Reportajes</a></li>
+          <li><a href="#">Equipo clínico</a></li>
+          <li><a href="#">Reportes RR.HH.</a></li>
+          <li><a href="#">Habeas data</a></li>
+          <li><a href="#">Trabajar con nosotros</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Sede &amp; contacto</h5>
+        <ul>
+          <li>Calle 134 # 7-83</li>
+          <li>Bogotá D.C., Colombia</li>
+          <li><a href="tel:+573153369631">315 336 9631</a></li>
+          <li><a href="mailto:hola@telova.co">hola@telova.co</a></li>
+          <li>Lun — Vie · 7 am — 7 pm</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="compliance" aria-label="Cumplimiento y registros">
+      <span><b>NIT 901.487.220-3</b></span><span class="sep">◆</span>
+      <span><b>Habilitación REPS Bogotá D.C.</b></span><span class="sep">◆</span>
+      <span>Telesalud · <i>Res. 2654 / 2019 MinSalud</i></span><span class="sep">◆</span>
+      <span>Habeas Data · <i>Ley 1581 / 2012</i></span><span class="sep">◆</span>
+      <span>12 psicólogos · 4 psiquiatras · 6 coaches ICF</span>
+    </div>
+
+    <div class="foot-bottom">
+      <span>© MMXXVI · Telova S.A.S. · Vol. 02 — Núm. <span id="edicion">04</span></span>
+      <span>Cuerpo: <i style="color:var(--morado)">Fraunces</i> · Datos: <i>JetBrains Mono</i> · Papel: <i>Crema 80g</i></span>
+      <span class="colombia"><span class="flag"></span>Hecho en Bogotá · Atendemos toda Colombia</span>
+    </div>
+
+    <div class="masthead-logo"><img src="./logo.png" alt="Telova" /></div>
+  </div>
+</footer>
+
+<div class="m-cta" role="complementary" aria-label="Acciones rápidas">
+  <div class="lhs">
+    <span class="a">Hablar con Telova</span>
+    <span class="b">Respuesta hoy · Bogotá</span>
+  </div>
+  <div class="rhs">
+    <a href="tel:+573153369631" class="tel" aria-label="Llamar 315 336 9631">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+    </a>
+    <a href="#contacto" class="go">Agendar
+      <svg class="arrow" viewBox="0 0 20 20" fill="none"><path d="M3 10h14m0 0l-5-5m5 5l-5 5" stroke="currentColor" stroke-width="1.6"/></svg>
+    </a>
+  </div>
+</div>
+
+<script>
+(function(){
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function updateLiveDate(){
+    var dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    var meses=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    var d=new Date();
+    d.setDate(d.getDate()+1);
+    var dia=dias[d.getDay()];
+    var num=d.getDate();
+    var mes=meses[d.getMonth()];
+    var t=new Date(); t.setHours(t.getHours()+2);
+    var hh=String(t.getHours()).padStart(2,'0');
+    var mm=String(t.getMinutes()).padStart(2,'0');
+    var el=document.getElementById('live-date-text');
+    if(el){ el.textContent=dia+' '+num+' '+mes+' · '+hh+':'+mm; }
+  }
+  updateLiveDate();
+  setInterval(updateLiveDate, 30000);
+
+  (function(){
+    var d=new Date();
+    var jan1=new Date(d.getFullYear(),0,1);
+    var week=Math.ceil((((d - jan1) / 86400000) + jan1.getDay()+1)/7);
+    var el=document.getElementById('edicion');
+    if(el) el.textContent=String(week).padStart(2,'0');
+  })();
+
+  if(!prefersReduced && 'IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          e.target.classList.add('is-in');
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+    document.querySelectorAll('.reveal, section').forEach(function(n){ io.observe(n); });
+  } else {
+    document.querySelectorAll('.reveal, section').forEach(function(n){ n.classList.add('is-in'); });
+  }
+
+  function easeOut(t){ return 1 - Math.pow(1-t, 3); }
+  function formatNum(val, format){
+    val = Math.round(val);
+    if(format==='thousand'){
+      return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+    return String(val);
+  }
+  function runCount(node){
+    if(node.dataset.done) return;
+    node.dataset.done='1';
+    var to = parseFloat(node.dataset.countTo || node.textContent);
+    var suffix = node.dataset.suffix || '';
+    var fmt = node.dataset.format || '';
+    if(prefersReduced){ node.innerHTML = formatNum(to, fmt) + suffix; return; }
+    var dur = Math.min(1800, 800 + Math.sqrt(to)*40);
+    var start = performance.now();
+    function tick(now){
+      var p = Math.min(1, (now-start)/dur);
+      var v = easeOut(p) * to;
+      node.innerHTML = formatNum(v, fmt) + suffix;
+      if(p<1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  if('IntersectionObserver' in window){
+    var ioCount = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ runCount(e.target); ioCount.unobserve(e.target); }
+      });
+    },{threshold:0.4});
+    document.querySelectorAll('.count').forEach(function(n){
+      n.innerHTML = formatNum(0, n.dataset.format||'') + (n.dataset.suffix||'');
+      ioCount.observe(n);
+    });
+  }
+
+  function startHero(){
+    document.body.classList.add('head-loaded');
+    setTimeout(function(){
+      document.body.classList.add('head-finished');
+    }, prefersReduced ? 0 : 1300);
+  }
+  if(document.readyState==='complete'){ setTimeout(startHero, 60); }
+  else { window.addEventListener('load', function(){ setTimeout(startHero, 60); }); }
+
+  // Populate "Próxima cita disponible" date
+  (function(){
+    var days = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    var months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+    function updateAvail(){
+      var d = new Date();
+      d.setDate(d.getDate() + 1); // next day
+      var txt = days[d.getDay()] + ' ' + d.getDate() + ' ' + months[d.getMonth()];
+      var el = document.getElementById('live-date-text');
+      if(el) el.textContent = txt;
+    }
+    updateAvail();
+  })();
+})();
+</script>
+
+</body>
+</html>
